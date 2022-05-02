@@ -33,6 +33,7 @@ var options = function(){
 			discard: function(){
 				this.num = options_data.cards;
 				this.dificulty = options_data.dificulty;
+				loadpage("../");
 			},
 			save: function(){
 				options_data.cards = this.num;

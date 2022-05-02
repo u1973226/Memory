@@ -10,7 +10,7 @@ function phaser_game(){
 	loadpage("./html/phasergame.html");
 }
 
-function exit (){
+function exit(){
 	if (name != ""){
 		alert("Leaving " + name + "'s game");
 	}

@@ -1,3 +1,14 @@
+var options_data = {
+	cards:2, dificulty:"hard"
+};
+var uname = "";
+var json = "";
+var load = function(){
+	json = localStorage.getItem("config") || '{"cards":2,"dificulty":"hard"}';
+	options_data = JSON.parse(json);
+	uname = localStorage.getItem("username") || '[ ]';
+};
+load();
 var gameObj = function (){
 	const back = "../resources/back.png";
 	const items = ["../resources/cb.png","../resources/co.png","../resources/sb.png",
@@ -11,10 +22,10 @@ var gameObj = function (){
 	var vueInstance = new Vue({
 		el: "#game_id",
 		data: {
-			username:'',
+			username:uname,
 			current_card: [],
 			items: [],
-			num_cards: 2,
+			num_cards: options_data.cards,
 			bad_clicks: 0
 		},
 		created: function(){
@@ -78,6 +89,9 @@ var gameObj = function (){
 				arrayPartides.push(partida);
 				localStorage.partides = JSON.stringify(arrayPartides);
 				loadpage("../");
+			},
+			to_menu: function(){
+				loadpage("../");
 			}
 		},
 		watch: {
@@ -109,7 +123,20 @@ var gameObj = function (){
 		},
 		computed: {
 			score_text: function(){
-				return 100 - this.bad_clicks * 20;
+				var multi = 0;
+				if (options_data.dificulty === "easy"){ 
+					multi = 10;
+				}
+				else if (options_data.dificulty === "normal"){
+					multi = 20;
+				}
+				else if (options_data.dificulty === "hard"){  
+					multi = 30;
+				}
+				else{ 
+					multi = 20;
+				}
+				return 100 - this.bad_clicks * multi;
 			}
 		}
 	});
