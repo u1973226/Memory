@@ -85,16 +85,17 @@ class GameScene extends Phaser.Scene {
 				loadpage("../")
 			});
 			
-		let resta = 0;
+		let resta = 0, game_over = false;
 		if (this.options_data.dificulty == "easy") resta = 10;
 		else if (this.options_data.dificulty == "normal") resta = 20;
 		else resta = 30;
 		let i = 0;
 		this.cards.children.iterate((card)=>{
-			card.card_id = arraycards[i];
+			card.card_id = usable_array[i];
 			i++;
 			card.setInteractive({ useHandCursor: true });
 			card.on('pointerup', () => {
+				if (!game_over) {
 				card.disableBody(true,true);
 				if (this.firstClick){
 					if (this.firstClick.card_id !== card.card_id){
@@ -105,6 +106,8 @@ class GameScene extends Phaser.Scene {
 						if (this.score <= 0){
 							alert("Game Over");
 							scoreText.setText('Score: 0');
+							game_over = true;
+							this.disable_cards();
 						}
 					}
 					else{
@@ -118,10 +121,15 @@ class GameScene extends Phaser.Scene {
 				else{
 					this.firstClick = card;
 				}
+				}
 			}, card);
 		});
+	}
+
+	disable_cards = function(){
+		this.cards.children.destroy();
+		console.log("Si");
 	}
 	
 	update (){	}
 }
-
